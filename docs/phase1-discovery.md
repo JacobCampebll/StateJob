@@ -85,9 +85,9 @@ dashboard's "sync may be behind" warning fires when the newest ticket is older t
    day and not use `haul_date`.
 2. **Night paving crosses midnight.** Richmond Bypass (job 125367) ran 21:00–04:00.
    A strict midnight rollover would split one shift into two "production days" and
-   fire the 50-ton rule twice. Recommend defining a production day as a run of
-   tickets with no gap longer than N hours (propose 4 h), reported as the date the
-   shift started. Needs Jake's call.
+   fire the 50-ton rule twice. **Decision (Jake, 2026-09-14): strict midnight,
+   Eastern.** A shift that crosses midnight is two production days, and the 50-ton
+   rule re-arms at 00:00. The tracker follows the spec literally here.
 3. **`rev_no` is not numeric** (`*01`). Any revision ranking must strip non-digits
    first, as the views do.
 4. **`phase_code` ≠ proposal line.** On 125367 the 0.38A surface ran under
@@ -184,7 +184,7 @@ Things that do not line up one-to-one:
 ## 5. Questions for Jake before Phase 2
 
 1. Confirm the test contract: **252112 / 125367** primary, **262135 / 126334** live secondary. Or name a different CID.
-2. Production day: strict midnight, or shift-gap based (proposed 4-hour gap)? Night paving on 125367 crossed midnight every shift.
+2. ~~Production day~~ — answered: strict midnight Eastern.
 3. The single `3038D64C00` load on Jul 26: map it to the 0.38D item, treat it as a mis-key and fold it into 0.38A, or leave it unmapped?
 4. What are `mat_code`s 901, 120, 009, 805, 460? Should any map to a bid item (DGA base, seal aggregate)?
 5. Which bid item does Big Hill's `3100D64B01` base belong to?
