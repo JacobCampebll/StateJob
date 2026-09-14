@@ -183,3 +183,30 @@ Things that do not line up one-to-one:
 3. The single `3038D64C00` load on Jul 26: map it to the 0.38D item, treat it as a mis-key and fold it into 0.38A, or leave it unmapped?
 4. What are `mat_code`s 901, 120, 009, 805, 460? Should any map to a bid item (DGA base, seal aggregate)?
 5. Which bid item does Big Hill's `3100D64B01` base belong to?
+
+## 6. Scope change from Jake (2026-09-14): upload-driven setup
+
+Setup is no longer "type a CID and pull from the MCP". The tech uploads two files
+on the site and the site does the rest:
+
+1. **Proposal PDF** (e.g. `323-MADISON-25-2112.pdf`) → CID, county, route, bid
+   items with plan quantities. MCP `lookup_contract` stays as a cross-check when the
+   CID is already in the corpus.
+2. **Approved mix pack** (KYTC mix design submittal/approval workbook) → JMF id,
+   mix type, plant assignment, and the **random-number chart** (sublot → random
+   tonnage). This is the only source for the random points.
+
+Then the site uses the ILS connection (Supabase views) for tons.
+
+Design implications for Phase 2/3:
+
+- Add `tracker_documents` (project, kind proposal|mixpack, storage path, uploaded_by,
+  parsed_at, parse_json) and a private Supabase Storage bucket `tracker-docs`.
+- Uploads and parsing go through a Netlify Function (service key). Extracted values
+  land on a **review screen** the tech confirms before anything is written. Nothing
+  auto-commits from a parse.
+- Parser choice (deterministic text/xlsx parsing vs. Claude extraction) is decided
+  after seeing one real sample of each file.
+
+Needed from Jake: one real proposal PDF and one real approved mix pack for 252112
+(or whichever test CID is confirmed).
