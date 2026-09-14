@@ -69,6 +69,11 @@ Source: `netlify/functions/lib/tools.mjs` in ils-integration.
 Newest ticket at query time: `date_out` 2026-09-09 14:57 (Eastern), `date_mod`
 18:57 UTC, `synced_at` 18:58 UTC. Sync lag under 1 minute after the ticket landed.
 
+The Task Scheduler job runs **every 15 minutes, round the clock** (confirmed by Jake
+2026-09-14; the ils-integration README still says every 2 hours and is stale). The
+dashboard's "sync may be behind" warning fires when the newest ticket is older than
+30 minutes during a production day, i.e. two missed cycles.
+
 ## 2. Gotchas found (these change the design)
 
 1. **`date_out` is Eastern wall-clock mislabeled as UTC.** For freshly inserted
